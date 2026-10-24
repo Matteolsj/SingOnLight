@@ -12,7 +12,7 @@ A rhythm game where players reproduce light sequences using their voice.
 
 SingOnLight is a web-based rhythm game built with Python, FastAPI, SQLite, and a Raspberry Pi with Grove components.
 
-The project was originally developed as a first-year university group project. I later continued it individually, reorganizing and refactoring the codebase, translating the application and documentation into English, and adding a simulation mode to run the game without Raspberry Pi hardware.
+The project was originally developed as a first-year university group project. The original repository can be found [here](https://github.com/Bigouz/SingOnLight). I later continued it individually, reorganizing and refactoring the codebase, translating the application and documentation into English, and adding a simulation mode to run the game without Raspberry Pi hardware.
 
 ## Features
 
@@ -76,7 +76,7 @@ python main.py
 
 This launches simulation mode and opens [http://127.0.0.1:8001](http://127.0.0.1:8001) in your browser.
 
-In simulation mode, the sensor produces readings that match the expected rhythm, the LED operations are skipped, and automatic calibration uses a fixed threshold. Games therefore return a perfect score. Simulation is useful for exploring the pages and game flows, but it does not test real sensor behavior.
+In simulation mode, the sensor produces readings that match the expected rhythm, the LED operations are skipped, and automatic calibration uses a fixed threshold. With the default threshold, games return a perfect score. Simulation is useful for exploring the pages and game flows, but it does not test real sensor behavior.
 
 ### Raspberry Pi Mode
 
@@ -149,3 +149,12 @@ The game compares the sound detected during the light sequence with the expected
 Grove component documentation:
 - [Grove Sound Sensor](https://wiki.seeedstudio.com/Grove-Sound_Sensor/)
 - [Grove Red LED](https://wiki.seeedstudio.com/Grove-Red_LED/)
+
+## Contributors
+
+[![Matteolsj](https://wsrv.nl/?url=github.com/Matteolsj.png&w=48&h=48&fit=cover&mask=circle)](https://github.com/Matteolsj)
+[![Bigouz](https://wsrv.nl/?url=github.com/Bigouz.png&w=48&h=48&fit=cover&mask=circle)](https://github.com/Bigouz)
+[![AaronWrobel001](https://wsrv.nl/?url=github.com/AaronWrobel001.png&w=48&h=48&fit=cover&mask=circle)](https://github.com/AaronWrobel001)
+[![Sedique1](https://wsrv.nl/?url=github.com/Sedique1.png&w=48&h=48&fit=cover&mask=circle)](https://github.com/Sedique1)
+
+These profiles contributed to the [original group project](https://github.com/Bigouz/SingOnLight).
