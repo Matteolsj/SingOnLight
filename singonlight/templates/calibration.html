@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SingOnLight - Calibration</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="parent">
+        <div class="div1">
+            <div class="div1a">
+                <a class="indexBTN" href="/">Main Menu</a><br>
+                <a class="playBTN" href="/modes">Game Modes</a><br>
+                <a class="calibrationBTN" id="currentBTN" href="/calibration">Calibration</a><br>
+                <a class="dataBTN" href="/data">Data</a><br>
+                <a class="creationBTN" href="/rhythm/create">Create Your Own Rhythm!</a><br>
+                <a href="https://github.com/Matteolsj/SingOnLight" target="_blank" rel="noopener noreferrer"
+                    class="github">GitHub</a>
+            </div>
+        </div>
+        <div class="div2">
+            <h1>SingOnLight - Calibration</h1>
+            <div class="text">
+                <p>Calibration adjusts the <strong>sensitivity</strong> of the sound sensors.
+                    We recommend recalibrating whenever the environment changes.</p>
+                <div id="calibrations">
+                    <div class="container2"
+                        style="display:inline-block;vertical-align: top; min-height: 10rem; text-align: center;">
+                        <h3>Manual Calibration</h3>
+                        <label for="threshold">Threshold: </label>
+                        <input type="number" name="threshold" id="threshold" placeholder="Threshold" min="30" max="750"
+                            step="1" value="{{threshold}}"
+                            onchange="this.value=this.value.replace(/[^0-9]/g,''); if(this.value<30)this.value=30; if(this.value>750)this.value=750;"><br>
+                        <button class="calibrateBTN" id="cal_man_btn" onclick="calibrate()">Calibrate</button>
+                        <br><br>
+                    </div>
+                    <div class="container2"
+                        style="display:inline-block;vertical-align: top; min-height: 10rem; text-align: center;margin-left: 20px;">
+                        <h3>Automatic Calibration</h3>
+                        <br>
+                        <button class="calibrateBTN" onclick="auto_calibrate()">Automatic Calibration</button>
+                        <br><br>
+                    </div>
+
+                </div>
+                <div id="log" style="text-align: center;"></div>
+                <p style="color:lime;" id="result">{{message}}</p>
+
+
+                <script>
+                    const websocketProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+                    const ws = new WebSocket(`${websocketProtocol}//${window.location.host}/ws`);
+
+                    ws.onmessage = function (event) {
+                        const log = document.getElementById('log');
+                        log.innerHTML += event.data + '<br>';
+                        log.scrollTop = log.scrollHeight;
+                    };
+
+                    async function calibrate() {
+                        const threshold = parseInt(document.getElementById('threshold').value);
+
+                        const response = await fetch('/api/calibration/manual', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ "threshold": threshold })
+                        });
+
+                        const data = await response.json();
+                        document.getElementById('result').innerText = data;
+                    }
+
+                    async function auto_calibrate() {
+                        document.getElementById('log').innerHTML = "";
+                        document.getElementById('result').innerText = "";
+                        document.getElementById('cal_man_btn').disabled = true;
+                        const response = await fetch('/api/calibration/automatic', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+
+                        const data = await response.json();
+                        document.getElementById('result').innerText = data;
+                        document.getElementById('cal_man_btn').disabled = false;
+                    }
+                </script>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SingOnLight - Solo Game</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="parent">
+        <div class="div1">
+            <div class="div1a">
+                <a class="indexBTN" href="/">Main Menu</a><br>
+                <a class="playBTN" id="currentBTN" href="/modes">Game Modes</a><br>
+                <a class="calibrationBTN" href="/calibration">Calibration</a><br>
+                <a class="dataBTN" href="/data">Data</a><br>
+                <a class="creationBTN" href="/rhythm/create">Create Your Own Rhythm!</a><br>
+                <a href="https://github.com/Matteolsj/SingOnLight" target="_blank" rel="noopener noreferrer"
+                    class="github">GitHub</a>
+
+            </div>
+        </div>
+        <div class="div2">
+            <h1>SingOnLight - Solo Game</h1>
+            <div class="text">
+                <p>Press “Play” to start immediately.
+                    <br>When the LED lights up, make a continuous sound (sing, whistle, or hum).
+                </p>
+                <div class="container" style="min-width: 640px;">
+                    <h2>Game Settings</h2>
+                    <br>Choose your game settings below:
+                    <br><br>
+
+                    <div>
+                        <label for="rhythm">Use <strong>your custom rhythm</strong>? </label>
+                        <input type="checkbox" name="rhythm" id="rhythm" onchange="toggle_custom_rhythm()" {% if not
+                            has_custom_rhythm %}disabled{% endif %} style="vertical-align:middle;"><br>
+                        {% if not has_custom_rhythm %}<small>Save a custom rhythm first.</small>{% endif %}
+                    </div>
+
+                    <label for="interval_duration"><strong>Interval duration</strong> (seconds): </label>
+                    <input type="number" name="interval_duration" id="interval_duration" value="{{interval_duration}}"
+                        max="2" min="0.1" step="0.1" onchange="clamp_interval_duration(this);total_game_time()"><br>
+
+                    <label for="game_length"><strong>Game length</strong> (intervals): </label>
+                    <input type="number" name="game_length" id="game_length" value="{{game_length}}" max="120" min="5"
+                        onchange="this.value=this.value.replace(/[^0-9]/g,''); if(this.value<5)this.value=5; if(this.value>120)this.value=120;total_game_time()"><br><br>
+
+                    <br><br>
+                    <span id="total_game_time"> </span><br>
+                    <button id="start" class="start"
+                        onclick="this.disabled = true;save_game_settings();document.getElementById('result').innerText = ''; "><strong>Play</strong></button>
+                    <p id="win_streak">🔥🔥🔥 <strong>Win streak</strong>: {{win_streak}} 🔥🔥🔥 </p>
+                </div>
+
+
+                <br><br>
+                <p style="color: lime;" id="result">{{message}}</p>
+                <br><br>
+                <p id="countdown"></p>
+                <span id="rhythm_length" style="opacity: 0;">{{rhythm}}</span>
+
+                <script>
+                    function toggle_custom_rhythm() {
+                        // Update the game length when custom rhythm mode changes.
+                        if (document.getElementById("rhythm").checked) {
+                            document.getElementById("game_length").disabled = true;
+                            document.getElementById("game_length").value = parseInt(document.getElementById("rhythm_length").innerText);
+                            total_game_time();
+                        } else {
+                            document.getElementById("game_length").disabled = false;
+                        }
+                    }
+
+
+                    function clamp_interval_duration(t) {
+                        t.value = t.value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+                        let v = parseFloat(t.value);
+                        if (isNaN(v)) v = 0.1;
+                        if (v < 0.1) v = 0.1;
+                        if (v > 2.0) v = 2.0;
+                        v = Math.round(v * 10) / 10;
+                        t.value = v.toFixed(1);
+                    }
+
+
+                    function total_game_time() {
+                        let totalSeconds = Math.round(document.getElementById("game_length").value * document.getElementById("interval_duration").value);
+                        document.getElementById("total_game_time").innerHTML = "Total game time: " + totalSeconds + " seconds";
+                        return totalSeconds;
+                    }
+                    total_game_time()
+
+                    const delay = ms => new Promise(res => setTimeout(res, ms));
+                    async function save_game_settings() {
+                        // Save the settings, then start the game after a short countdown.
+                        document.getElementById("countdown").innerText = "The game starts in 3 seconds.";
+                        await delay(1000);
+                        document.getElementById("countdown").innerText = "The game starts in 2 seconds.";
+                        await delay(1000);
+                        document.getElementById("countdown").innerText = "The game starts in 1 second.";
+                        await delay(1000);
+                        document.getElementById("countdown").innerText = "";
+
+                        const interval_duration = parseFloat(document.getElementById('interval_duration').value);
+                        const game_length = parseInt(document.getElementById('game_length').value);
+
+                        const response = await fetch('/api/play', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ "interval_duration": interval_duration, "game_length": game_length, "use_custom_rhythm": document.getElementById("rhythm").checked ? 1 : 0 })
+                        });
+                        const data = await response.json();
+                        document.getElementById('result').innerText = data["message"];
+                        document.getElementById('result').style.color = data["message"].includes("won") ? "lime" : "red";
+                        document.getElementById('win_streak').innerText = "🔥🔥🔥 Win streak: " + data["win_streak"] + " 🔥🔥🔥";
+
+
+                        document.getElementById('start').disabled = false;
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

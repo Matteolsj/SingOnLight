@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SingOnLight - Data</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.highcharts.com/themes/adaptive.js"></script>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="div1">
+            <div class="div1a">
+                <a class="indexBTN" href="/">Main Menu</a><br>
+                <a class="playBTN" href="/modes">Game Modes</a><br>
+                <a class="calibrationBTN" href="/calibration">Calibration</a><br>
+                <a class="dataBTN" id="currentBTN" href="/data">Data</a><br>
+                <a class="creationBTN" href="/rhythm/create">Create Your Own Rhythm!</a><br>
+                <a href="https://github.com/Matteolsj/SingOnLight" target="_blank" rel="noopener noreferrer"
+                    class="github">GitHub</a>
+            </div>
+        </div>
+        <div class="div2">
+            <h1>SingOnLight - Data</h1>
+            <div class="text">
+                <p>Your game <strong>data</strong> is shown here.</p>
+                <figure class="highcharts-figure">
+                    <div id="container"></div>
+                    <p class="highcharts-description">
+                        Chart showing the score distribution across your games.<br>
+                        <button class="refresh" onclick="refresh_game_data()"><strong>Refresh</strong> the
+                            data</button>
+                        <button class="red" onclick="clear_game_data()"><strong>Clear</strong> the data</button><br>
+                    </p>
+                </figure>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script>
+        refresh_game_data();
+    </script>
+</body>
+
+</html>

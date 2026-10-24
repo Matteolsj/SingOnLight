@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SingOnLight - Multiplayer</title>
+    <link rel="icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="parent">
+        <div class="div1">
+            <div class="div1a">
+                <a class="indexBTN" href="/">Main Menu</a><br>
+                <a class="playBTN" id="currentBTN" href="/modes">Game Modes</a><br>
+                <a class="calibrationBTN" href="/calibration">Calibration</a><br>
+                <a class="dataBTN" href="/data">Data</a><br>
+                <a class="creationBTN" href="/rhythm/create">Create Your Own Rhythm!</a><br>
+                <a href="https://github.com/Matteolsj/SingOnLight" target="_blank" rel="noopener noreferrer"
+                    class="github">GitHub</a>
+
+            </div>
+        </div>
+        <div class="div2">
+            <h1>SingOnLight - Multiplayer</h1>
+            <div class="text">
+                <p>Press “Play” to start immediately.
+                    <br>When the LED lights up, make a continuous sound (sing, whistle, or hum).
+                </p>
+                <div class="container" style="min-width: 640px;">
+                    <h2>Game Settings</h2>
+                    <br>Choose your game settings below:
+                    <br><br>
+
+
+                    <label for="interval_duration"><strong>Interval duration</strong> (seconds): </label>
+                    <input type="number" name="interval_duration" id="interval_duration" value="{{interval_duration}}" max="2"
+                        min="0.1" step="0.1" onchange="clamp_interval_duration(this);total_game_time()"><br>
+
+                    <label for="game_length"><strong>Game length</strong> (intervals): </label>
+                    <input type="number" name="game_length" id="game_length" value="{{game_length}}" max="120" min="5"
+                        onchange="this.value=this.value.replace(/[^0-9]/g,''); if(this.value<5)this.value=5; if(this.value>120)this.value=120;total_game_time()"><br><br>
+
+
+                    <span id="total_game_time"> </span><br>
+                    <button class="start" id="J1" onclick="save_game_settings(this)"><strong>Player 1</strong></button>
+                    <button class="start" id="J2" onclick="save_game_settings(this)"><strong>Player 2</strong></button>
+                </div>
+
+
+                <br><br>
+                <p style="color: rgb(0, 145, 255);" id="resultJ1"></p>
+                <p style="color: rgb(0, 145, 255);" id="resultJ2"></p>
+                <br>
+                <p style="color: rgb(0,255,0);" id="result"><br>
+                    <button class="playBTN" id="okBTN" onclick="location.reload()"
+                        style="visibility: hidden;">OK</button>
+                </p>
+
+
+                <script>
+                    function clamp_interval_duration(t) {
+                        t.value = t.value.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+                        let v = parseFloat(t.value);
+                        if (isNaN(v)) v = 0.1;
+                        if (v < 0.1) v = 0.1;
+                        if (v > 2.0) v = 2.0;
+                        v = Math.round(v * 10) / 10;
+                        t.value = v.toFixed(1);
+                    }
+
+
+                    function total_game_time() {
+                        let totalSeconds = Math.round(document.getElementById("game_length").value * document.getElementById("interval_duration").value);
+                        document.getElementById("total_game_time").innerHTML = "Total game time: " + totalSeconds + " seconds";
+                        return totalSeconds;
+                    }
+                    total_game_time()
+
+
+                    async function save_game_settings(player) {
+                        const interval_duration = parseFloat(document.getElementById('interval_duration').value);
+                        const game_length = parseInt(document.getElementById('game_length').value);
+                        document.getElementById('game_length').disabled = true;
+                        document.getElementById('interval_duration').disabled = true;
+                        document.getElementById("J1").disabled = true;
+                        document.getElementById("J2").disabled = true;
+
+                        const response = await fetch('/api/play/multiplayer', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ "interval_duration": interval_duration, "game_length": game_length, "rhythm": gameRhythm })
+                        });
+                        const data = await response.json();
+                        let playerLabel;
+                        if (player == document.getElementById("J1")) {
+                            playerLabel = "Player 1 ";
+                        } else playerLabel = "Player 2 ";
+
+                        if (player == document.getElementById("J1")) {
+                            document.getElementById('resultJ1').innerText = playerLabel + data["message"];
+                            playerOnePercentage = data["percentage"];
+                        } else {
+                            document.getElementById('resultJ2').innerText = playerLabel + data["message"];
+                            playerTwoPercentage = data["percentage"];
+                        }
+
+                        if (document.getElementById("resultJ1").innerText == "") {
+                            document.getElementById("J1").disabled = false;
+                        }
+                        if (document.getElementById("resultJ2").innerText == "") {
+                            document.getElementById("J2").disabled = false;
+                        }
+
+                        if (document.getElementById("resultJ1").innerText != "" && document.getElementById("resultJ2").innerText != "") {
+                            if (playerOnePercentage > playerTwoPercentage) {
+                                document.getElementById("result").innerText = "Player 1 won.";
+                            }
+                            if (playerTwoPercentage > playerOnePercentage) {
+                                document.getElementById("result").innerText = "Player 2 won.";
+                            }
+                            if (playerTwoPercentage == playerOnePercentage) {
+                                document.getElementById("result").innerText = "It’s a tie."
+                            }
+                            document.getElementById("okBTN").style.visibility = "visible";
+                        }
+
+                        player.disabled = true;
+                        gameRhythm = data["rhythm"]
+                    }
+
+                    var gameRhythm = -1;
+                    var playerOnePercentage = -1;
+                    var playerTwoPercentage = -1;
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

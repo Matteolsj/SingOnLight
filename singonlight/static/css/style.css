@@ -1,0 +1,256 @@
+body{
+    background-color: #282b30;
+    color: white;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#currentBTN{
+    color: #92a7f4;
+    background: #282B30;
+    background: -webkit-linear-gradient(90deg, rgba(40, 43, 48, 1) 0%, rgba(40, 43, 48, 1) 52%, rgba(61, 75, 110, 1) 100%);
+    background: -moz-linear-gradient(90deg, rgba(40, 43, 48, 1) 0%, rgba(40, 43, 48, 1) 52%, rgba(61, 75, 110, 1) 100%);
+    background: linear-gradient(90deg, rgba(40, 43, 48, 1) 0%, rgba(40, 43, 48, 1) 52%, rgba(61, 75, 110, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#282B30", endColorstr="#3D4B6E", GradientType=1);
+}
+
+.parent {
+display: grid;
+grid-template-columns:250px 1fr;
+grid-template-rows: 1fr;
+grid-column-gap: 10px;
+}
+
+.div1 { grid-area: 1 / 1 / 6 / 2; }
+.div2 { grid-area: 1 / 2 / 6 / 6; }
+
+.div1{
+    background-color:#1e2124;
+    border-radius: 10px;
+    text-align: center;
+    min-height: 97vh;
+    box-shadow: #000000 0px 4px 12px, inset 1px 1px #ffffff30;
+}
+
+.div1a{
+    padding-top: 0.5rem;
+}
+
+.div1a a{
+    text-decoration: unset;
+    color: white;
+    display: inline-block;
+    margin-top: 9px;
+    background-color: #282b30;
+    border-radius: 7.5px;
+    min-width: 97%;
+    min-height: 20px;
+    box-shadow: black 1px 2px 1px, inset 1px 1px #ffffff30;
+}
+
+a:hover{
+    color: rgb(198 228 255);
+    background-color: #f1f6ff1f;
+}
+
+.player{
+   margin-top: 0px;
+    background-color: #F28600;
+    border: 0px solid;
+    border-radius: 4px;
+    min-width: 250px;
+    min-height: 55px;
+    color:white;
+    text-shadow: black 1px 1px 2px;
+    box-shadow: black 1px 2px 1px, inset 1px 1px #ffffff30;
+}
+
+h1{
+    color: #7289da;
+    text-align: center;
+    text-shadow: #000000 1px 1px 2px;
+}
+
+p, h2{
+    text-align: center;
+}
+
+button{
+    margin-top: 20px;
+    background-color: #7289da;
+    border: 0px solid;
+    border-radius: 4px;
+    min-width: 100px;
+    min-height: 25px;
+    color:white;
+    text-shadow: black 1px 1px 2px;
+    box-shadow: black 1px 2px 1px, inset 1px 1px #ffffff30;
+}
+
+input[type="number"] {
+    border: 0px solid #000000;
+    border-radius: 8px;
+    padding: 2px;
+    font-size: 16px;
+    outline: none;
+    background-color: #373b3f;
+    color: white;
+    box-shadow: black 1px 1px 1px, inset 1px 1px #ffffff30;
+}
+
+button:hover{
+    background-color: #5b6eae;
+    cursor: pointer;
+}
+
+button:disabled{
+    background-color: #555b6e;
+    cursor: not-allowed;
+}
+
+button.red{
+    background-color: #da7272;
+    cursor: pointer;
+}
+
+button.red:hover{
+    background-color: #ae5b5b;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  filter: invert(0.77777);
+}
+input[type="number"]::-webkit-outer-spin-button {
+  filter: invert(0.77777);
+}
+
+.container {
+    background-color: #1e2124;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: inset #000000 0px 4px 12px, 1px 1px #ffffff30;
+    width: fit-content;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    -webkit-transform: translate(-50%, 0%);
+    text-align: center;
+}
+
+.container2 {
+    background-color: #1e2124;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: inset #000000 0px 4px 12px, 1px 1px #ffffff30;
+    width: fit-content;
+    position: relative;
+    left: 50%;
+    text-align: center;
+    position: unset;
+    left: unset;
+    transform: unset;
+}
+
+.container p{
+  font-size: 20px;
+}
+
+#calibrations{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.container:hover, .container2:hover{
+    box-shadow: #000000 0px 4px 12px, inset 1px 1px #ffffff30;
+}
+
+h2{
+    text-shadow: #000000 1px 1px 2px;
+    color: #92a7f4;
+}
+
+a.player{
+    text-decoration: unset;
+    background-color: #5b6eae;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #7289da;
+  border: 2px solid #a5b6f3;
+}
+
+/* Styles for Highcharts */
+#container {
+    height: 400px;
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid var(--highcharts-neutral-color-10, #e6e6e6);
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: var(--highcharts-neutral-color-60, #666);
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tbody tr:nth-child(even) {
+    background: var(--highcharts-neutral-color-3, #f7f7f7);
+}
+
+.highcharts-description {
+    margin: 0.3rem 10px;
+}
+
+.hidden {
+    width : 0%;
+    height : 0%;
+}
+.visible {
+    width : 90%;
+    height :90%;
+    display: block;
+    margin: 0 auto;
+}
