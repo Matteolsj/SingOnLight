@@ -1,6 +1,5 @@
 # SingOnLight
 
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-yellow.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688.svg)
 
